@@ -1,25 +1,33 @@
-body {
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
     font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #f0f0f0;
-    overflow: hidden;
 }
 
 .screen {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 30px;
-    box-sizing: border-box;
+    justify-content: space-between;
+    padding: 20px;
     width: 100%;
     max-width: 400px;
+    height: 100vh;
     background-color: #fff;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     position: relative;
 }
 
@@ -28,15 +36,15 @@ body {
 }
 
 h1, h2, p {
-    color: #333;
     text-align: center;
+    color: #333;
     font-weight: bold;
 }
 
 .button-container {
     display: flex;
     gap: 20px;
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 .button-container.horizontal {
@@ -45,7 +53,7 @@ h1, h2, p {
 }
 
 button {
-    padding: 18px 30px;
+    padding: 15px 25px;
     border: 2px solid #ccc;
     border-radius: 8px;
     font-size: 20px;
@@ -78,74 +86,59 @@ button:hover {
     box-sizing: border-box;
 }
 
-.result-container p {
-    font-size: 1.5em;
-    font-weight: bold;
-    margin-bottom: 5px;
+.result-container {
+    text-align: center;
+    margin-top: 20px;
 }
 
 #resultGrade {
+    display: inline-block;
     font-size: 3em;
     font-weight: bold;
     color: #333;
-    margin-top: 10px;
+    text-align: center;
+    width: 100%;
+}
+
+.wheel-picker {
+    width: 120px;
+    height: 60px;
+    overflow: hidden;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    background: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    touch-action: none;
+    user-select: none;
+    font-weight: bold;
+    font-size: 2em;
+}
+
+.wheel-picker .picker-value {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    transition: color 0.2s, font-size 0.2s;
+}
+
+.wheel-picker .picker-value.active {
+    font-size: 2em;
+    color: #333;
+}
+
+.wheel-picker .picker-value.inactive {
+    font-size: 1.2em;
+    color: #bbb;
 }
 
 .number-selector-container {
     display: flex;
     align-items: center;
-    gap: 15px;
-    margin: 20px 0;
-}
-
-/* ---------------- Wheel Picker ---------------- */
-.wheel-picker {
-    position: relative;
-    width: 120px;
-    height: 180px;              /* 3 значення по 60px */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-    overflow: hidden;
-    background: #f9f9f9;
-    border-radius: 12px;
-    border: 2px solid #ccc;
-    touch-action: none;
-    user-select: none;
-}
-
-/* Лінії зверху і знизу */
-.wheel-picker::before,
-.wheel-picker::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    height: 60px;
-    border-top: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
-    pointer-events: none;
-}
-
-.wheel-picker::before {
-    top: 60px;
-}
-.wheel-picker::after {
-    bottom: 60px;
-}
-
-.wheel-picker .picker-value {
-    height: 60px;
-    line-height: 60px;
-    font-size: 1.5em;
-    color: #aaa;
-    transition: all 0.2s ease;
-    user-select: none;
-}
-
-.wheel-picker .picker-value.active {
-    font-size: 2em;
-    font-weight: bold;
-    color: #000;
+    margin: 20px 0;
 }

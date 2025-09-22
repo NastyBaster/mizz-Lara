@@ -13,10 +13,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const backButton2 = document.getElementById('backButton2');
 
     let maxGrade = 0;
-    let maxQuestions = 20;
-    let correctAnswers = 0;
+    let maxQuestions = 20;  // Значення по замовчуванню
+    let correctAnswers = 20; // Значення по замовчуванню
 
-    // Показуємо/ховаємо екрани
     function showScreen(screenToShow) {
         screen1.classList.add('hidden');
         screen2.classList.add('hidden');
@@ -24,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
         screenToShow.classList.remove('hidden');
     }
 
-    // Обробка кнопок оцінки
+    // Кнопки вибору оцінки
     gradeButtons.forEach(button => {
         button.addEventListener('click', () => {
             maxGrade = parseInt(button.dataset.grade, 10);
@@ -32,28 +31,24 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Wheel Picker
-    function createWheelPicker(element, min, max, value, onChange) {
-        let current = value;
+    // Створення колеса (wheel picker)
+    function createWheelPicker(element, min, max, defaultValue, onChange) {
+        let current = defaultValue;
         let startY = null;
         let swipeAccum = 0;
 
         function render() {
             element.innerHTML = '';
-            const prev = document.createElement('div');
-            prev.className = 'picker-value inactive';
-            prev.textContent = current > min ? current - 1 : '';
-            element.appendChild(prev);
-
-            const curr = document.createElement('div');
-            curr.className = 'picker-value';
-            curr.textContent = current;
-            element.appendChild(curr);
-
-            const next = document.createElement('div');
-            next.className = 'picker-value inactive';
-            next.textContent = current < max ? current + 1 : '';
-            element.appendChild(next);
+            for (let i = current - 1; i <= current + 1; i++) {
+                const div = document.createElement('div');
+                if (i < min || i > max) {
+                    div.textContent = '';
+                } else {
+                    div.textContent = i;
+                }
+                div.className = 'picker-value ' + (i === current ? 'active' : 'inactive');
+                element.appendChild(div);
+            }
         }
 
         function setValue(val) {
@@ -66,11 +61,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // TOUCH: плавний свайп
+        // Touch support
         element.addEventListener('touchstart', e => {
             if (e.touches.length === 1) {
                 startY = e.touches[0].clientY;
-                swipeAccum = 0;
             }
         });
 
@@ -78,17 +72,14 @@ document.addEventListener('DOMContentLoaded', () => {
             if (startY !== null) {
                 const deltaY = e.touches[0].clientY - startY;
                 swipeAccum += deltaY;
-
-                const stepSize = 30; // 30px = 1 крок
+                const stepSize = 30; // 30px на один крок
                 let steps = Math.trunc(swipeAccum / stepSize);
-
                 if (steps !== 0) {
                     setValue(current - steps);
                     swipeAccum -= steps * stepSize;
                 }
-
                 startY = e.touches[0].clientY;
-                e.preventDefault(); // блокуємо скрол лише всередині колеса
+                e.preventDefault();
             }
         }, { passive: false });
 
@@ -97,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
             swipeAccum = 0;
         });
 
-        // Мишка
+        // Mouse wheel
         element.addEventListener('wheel', e => {
             let steps = Math.round(e.deltaY / 40);
             if (steps !== 0) setValue(current + steps);
@@ -105,17 +96,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         render();
-
-        return {
-            setValue,
-            getValue: () => current
-        };
+        return { setValue, getValue: () => current };
     }
 
-    // Пікери
+    // Колесо для maxQuestions (екран 2)
     const maxQuestionsWheel = createWheelPicker(
         maxQuestionsPicker, 10, 30, maxQuestions, val => {
             maxQuestions = val;
+            // Автоматично коригує correctAnswers, якщо більше maxQuestions
             if (correctAnswers > maxQuestions) {
                 correctAnswers = maxQuestions;
                 correctAnswersWheel.setValue(correctAnswers);
@@ -123,9 +111,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     );
 
+    // Колесо для correctAnswers (екран 3)
     let correctAnswersWheel;
     function updateCorrectAnswersPicker() {
-        if (correctAnswersPicker.childNodes.length === 0) {
+        if (!correctAnswersWheel) {
             correctAnswersWheel = createWheelPicker(
                 correctAnswersPicker, 0, maxQuestions, correctAnswers, val => {
                     correctAnswers = val;
@@ -139,13 +128,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Екран 2: кнопка "Готово"
     setQuestionsButton.addEventListener('click', () => {
-        correctAnswers = 0;
+        correctAnswers = 20; // скидаємо на 20 по замовчуванню
         resultGradeSpan.textContent = '';
         updateCorrectAnswersPicker();
         showScreen(screen3);
     });
 
-    // Екран 3: Розрахунок
+    // Розрахунок оцінки (екран 3)
     calculateButton.addEventListener('click', () => {
         const calculatedGrade = (correctAnswers / maxQuestions) * maxGrade;
         const finalGrade = (calculatedGrade % 1 >= 0.5) ? Math.ceil(calculatedGrade) : Math.floor(calculatedGrade);
@@ -156,6 +145,6 @@ document.addEventListener('DOMContentLoaded', () => {
     backButton1.addEventListener('click', () => showScreen(screen1));
     backButton2.addEventListener('click', () => showScreen(screen1));
 
-    // Показуємо перший екран
+    // Показуємо перший екран при завантаженні
     showScreen(screen1);
 });
