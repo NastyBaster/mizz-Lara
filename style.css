@@ -14,6 +14,36 @@
     justify-content: center;
     font-size: 2em;
     font-weight: bold;
+    transition: background 0.2s;
+}
+.wheel-picker .picker-value {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    transition: color 0.2s, transform 0.2s;
+}
+.wheel-picker .picker-value.inactive {
+    color: #bbb;
+    font-size: 1.2em;
+}
+.wheel-picker {
+    width: 120px;
+    height: 60px;
+    overflow: hidden;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    background: #f9f9f9;
+    position: relative;
+    touch-action: none;
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 2em;
+    font-weight: bold;
 }
 .wheel-picker .picker-value {
     height: 60px;

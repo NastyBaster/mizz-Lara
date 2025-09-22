@@ -76,6 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
+        // TOUCH: змінюємо число на кілька кроків залежно від довжини свайпу
         element.addEventListener('touchstart', e => {
             if (e.touches.length === 1) {
                 startY = e.touches[0].clientY;
@@ -85,11 +86,12 @@ document.addEventListener('DOMContentLoaded', () => {
         element.addEventListener('touchmove', e => {
             if (startY !== null) {
                 const deltaY = e.touches[0].clientY - startY;
-                if (Math.abs(deltaY) > 20) {
-                    moved = true;
-                    if (deltaY > 0) setValue(current - 1);
-                    else setValue(current + 1);
-                    startY = e.touches[0].clientY;
+                if (Math.abs(deltaY) > 10) {
+                    let steps = Math.round(deltaY / 30); // 30px = 1 крок
+                    if (steps !== 0) {
+                        setValue(current - steps);
+                        startY = e.touches[0].clientY;
+                    }
                 }
                 e.preventDefault();
             }
@@ -99,8 +101,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         // Mouse support
         element.addEventListener('wheel', e => {
-            if (e.deltaY > 0) setValue(current + 1);
-            else setValue(current - 1);
+            let steps = Math.round(e.deltaY / 40); // 40px = 1 крок
+            if (steps !== 0) setValue(current + steps);
             e.preventDefault();
         });
         render();
