@@ -1,12 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Блокуємо прокрутку сторінки під час свайпу по picker
-    function preventScrollOnPicker(picker) {
-        picker.addEventListener('touchmove', function(e) {
-            e.preventDefault();
-        }, { passive: false });
-    }
-    preventScrollOnPicker(maxQuestionsPicker);
-    preventScrollOnPicker(correctAnswersPicker);
     const screen1 = document.getElementById('screen1');
     const screen2 = document.getElementById('screen2');
     const screen3 = document.getElementById('screen3');
@@ -20,6 +12,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const backButton1 = document.getElementById('backButton1');
     const backButton2 = document.getElementById('backButton2');
     const arrowButtons = document.querySelectorAll('.arrow-button');
+
+    // Блокуємо прокрутку сторінки під час свайпу по picker
+    function preventScrollOnPicker(picker) {
+        if (!picker) return;
+        picker.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+    }
+    preventScrollOnPicker(maxQuestionsPicker);
+    preventScrollOnPicker(correctAnswersPicker);
 
     let maxGrade = 0;
     let maxQuestions = 20;
