@@ -1,3 +1,32 @@
+.wheel-picker {
+    width: 120px;
+    height: 60px;
+    overflow: hidden;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    background: #f9f9f9;
+    position: relative;
+    touch-action: none;
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 2em;
+    font-weight: bold;
+}
+.wheel-picker .picker-value {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    transition: color 0.2s;
+}
+.wheel-picker .picker-value.inactive {
+    color: #bbb;
+    font-size: 1.2em;
+}
 body {
     font-family: Arial, sans-serif;
     display: flex;
@@ -6,6 +35,7 @@ body {
     height: 100vh;
     margin: 0;
     background-color: #f0f0f0;
+    overflow: hidden; /* Забороняє прокрутку екрану */
 }
 
 .screen {
@@ -26,7 +56,7 @@ body {
     display: none;
 }
 
-h1, h2 {
+h1, h2, p {
     color: #333;
     text-align: center;
     font-weight: bold;
@@ -60,7 +90,6 @@ button:hover {
     border-color: #999;
 }
 
-/* Оновлені стилі для верхньої кнопки */
 .top-button {
     position: absolute;
     top: 0;
@@ -75,7 +104,7 @@ button:hover {
     font-weight: normal;
     text-transform: uppercase;
     text-align: center;
-    box-sizing: border-box; /* Важливе виправлення */
+    box-sizing: border-box;
 }
 
 #resultGrade {
@@ -83,7 +112,6 @@ button:hover {
     font-weight: bold;
     color: #333;
     margin-top: 10px;
-    margin-bottom: 20px; /* Зменшений відступ */
 }
 
 .result-container p {
@@ -93,16 +121,18 @@ button:hover {
 }
 
 .result-container {
-    margin-top: 20px; /* Зменшений відступ */
+    margin-top: 30px;
     text-align: center;
 }
 
-.input-container {
-    margin: 20px 0; /* Зменшений відступ */
-    text-align: center;
+.number-selector-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 20px 0;
 }
 
-input[type="number"] {
+.number-display {
     width: 120px;
     padding: 12px;
     font-size: 2em;
@@ -111,4 +141,10 @@ input[type="number"] {
     border: 2px solid #ccc;
     border-radius: 5px;
     background-color: #f9f9f9;
+}
+
+.arrow-button {
+    padding: 10px 15px;
+    font-size: 2em;
+    font-weight: bold;
 }

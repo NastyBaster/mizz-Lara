@@ -1,54 +1,47 @@
 <!DOCTYPE html>
 <html lang="uk">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Калькулятор оцінок</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
     <div id="screen1" class="screen">
-      <h1>Оберіть максимальну оцінку</h1>
-      <div class="button-container">
-        <button class="grade-button" data-grade="10">10</button>
-        <button class="grade-button" data-grade="11">11</button>
-        <button class="grade-button" data-grade="12">12</button>
-      </div>
+        <h1>Оберіть максимальну оцінку</h1>
+        <div class="button-container">
+            <button class="grade-button" data-grade="10">10</button>
+            <button class="grade-button" data-grade="11">11</button>
+            <button class="grade-button" data-grade="12">12</button>
+        </div>
     </div>
 
     <div id="screen2" class="screen hidden">
-      <h2>Максимальна кількість питань</h2>
-      <div class="input-container">
-        <input
-          type="number"
-          id="maxQuestionsInput"
-          value="20"
-          min="10"
-          max="30"
-        />
-      </div>
-      <div class="button-container horizontal">
-        <button id="backButton1">Назад</button>
-        <button id="setQuestionsButton">Готово</button>
-      </div>
+        <h2>Максимальна кількість питань</h2>
+        <div class="number-selector-container">
+            <div id="maxQuestionsPicker" class="wheel-picker"></div>
+        </div>
+        <div class="button-container horizontal">
+            <button id="backButton1">Назад</button>
+            <button id="setQuestionsButton">Готово</button>
+        </div>
     </div>
 
     <div id="screen3" class="screen hidden">
-      <button id="backButton2" class="top-button">
-        Повернутися до налаштувань
-      </button>
-
-      <h2>Кількість правильних відповідей</h2>
-      <div class="input-container">
-        <input type="number" id="correctAnswersInput" value="0" min="0" />
-      </div>
-      <div class="result-container">
-        <p>Оцінка</p>
-        <span id="resultGrade"></span>
-      </div>
-      <button id="calculateButton">Розрахувати</button>
+        <button id="backButton2" class="top-button">Повернутися до налаштувань</button>
+        
+        <h2>Кількість правильних відповідей</h2>
+        <div class="number-selector-container">
+            <div id="correctAnswersPicker" class="wheel-picker"></div>
+        </div>
+        <div class="result-container">
+            <p>Оцінка</p>
+            <span id="resultGrade"></span>
+        </div>
+        <button id="calculateButton">Розрахувати</button>
     </div>
 
     <script src="script.js"></script>
-  </body>
+</body>
 </html>
