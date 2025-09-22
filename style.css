@@ -1,62 +1,3 @@
-.wheel-picker {
-    width: 120px;
-    height: 60px;
-    overflow: hidden;
-    border: 2px solid #ccc;
-    border-radius: 5px;
-    background: #f9f9f9;
-    position: relative;
-    touch-action: none;
-    user-select: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: 2em;
-    font-weight: bold;
-    transition: background 0.2s;
-}
-.wheel-picker .picker-value {
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    transition: color 0.2s, transform 0.2s;
-}
-.wheel-picker .picker-value.inactive {
-    color: #bbb;
-    font-size: 1.2em;
-}
-.wheel-picker {
-    width: 120px;
-    height: 60px;
-    overflow: hidden;
-    border: 2px solid #ccc;
-    border-radius: 5px;
-    background: #f9f9f9;
-    position: relative;
-    touch-action: none;
-    user-select: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: 2em;
-    font-weight: bold;
-}
-.wheel-picker .picker-value {
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    transition: color 0.2s;
-}
-.wheel-picker .picker-value.inactive {
-    color: #bbb;
-    font-size: 1.2em;
-}
 body {
     font-family: Arial, sans-serif;
     display: flex;
@@ -65,7 +6,7 @@ body {
     height: 100vh;
     margin: 0;
     background-color: #f0f0f0;
-    overflow: hidden; /* Забороняє прокрутку екрану */
+    overflow: hidden;
 }
 
 .screen {
@@ -137,22 +78,17 @@ button:hover {
     box-sizing: border-box;
 }
 
-#resultGrade {
-    font-size: 3em;
-    font-weight: bold;
-    color: #333;
-    margin-top: 10px;
-}
-
 .result-container p {
     font-size: 1.5em;
     font-weight: bold;
     margin-bottom: 5px;
 }
 
-.result-container {
-    margin-top: 30px;
-    text-align: center;
+#resultGrade {
+    font-size: 3em;
+    font-weight: bold;
+    color: #333;
+    margin-top: 10px;
 }
 
 .number-selector-container {
@@ -162,19 +98,54 @@ button:hover {
     margin: 20px 0;
 }
 
-.number-display {
+/* ---------------- Wheel Picker ---------------- */
+.wheel-picker {
+    position: relative;
     width: 120px;
-    padding: 12px;
-    font-size: 2em;
-    font-weight: bold;
-    text-align: center;
+    height: 180px;              /* 3 значення по 60px */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #f9f9f9;
+    border-radius: 12px;
     border: 2px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
+    touch-action: none;
+    user-select: none;
 }
 
-.arrow-button {
-    padding: 10px 15px;
+/* Лінії зверху і знизу */
+.wheel-picker::before,
+.wheel-picker::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 60px;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    pointer-events: none;
+}
+
+.wheel-picker::before {
+    top: 60px;
+}
+.wheel-picker::after {
+    bottom: 60px;
+}
+
+.wheel-picker .picker-value {
+    height: 60px;
+    line-height: 60px;
+    font-size: 1.5em;
+    color: #aaa;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.wheel-picker .picker-value.active {
     font-size: 2em;
     font-weight: bold;
+    color: #000;
 }
