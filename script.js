@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // TOUCH: змінюємо число на кілька кроків залежно від довжини свайпу
+        // TOUCH: покрокове прокручування з акумуляцією руху
         let swipeAccum = 0;
         element.addEventListener('touchstart', e => {
             if (e.touches.length === 1) {
@@ -94,8 +94,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (steps !== 0) {
                     setValue(current - steps);
                     swipeAccum -= steps * stepSize;
-                    startY = e.touches[0].clientY;
                 }
+                startY = e.touches[0].clientY;
                 e.preventDefault();
             }
         }, { passive: false });
