@@ -1,48 +1,50 @@
 <!DOCTYPE html>
-<html lang="uk">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Калькулятор оцінок</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grade Calculator</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <p id="head">Choose max grade for 20 questions</p>
 
-<div id="screen1" class="screen">
-    <h1>Оберіть максимальну оцінку</h1>
-    <div class="button-container">
-        <button class="grade-button" data-grade="10">10</button>
-        <button class="grade-button" data-grade="11">11</button>
-        <button class="grade-button" data-grade="12">12</button>
-    </div>
-</div>
+      <div id="choseMaxGrade" class="button-group">
+        <button class="grade-btn" data-grade="10">10</button>
+        <button class="grade-btn" data-grade="11">11</button>
+        <button class="grade-btn" data-grade="12">12</button>
+      </div>
 
-<div id="screen2" class="screen hidden">
-    <h2>Максимальна кількість питань</h2>
-    <div class="number-selector-container">
-        <div id="maxQuestionsPicker" class="wheel-picker"></div>
-    </div>
-    <div class="button-container horizontal">
-        <button id="backButton1">Назад</button>
-        <button id="setQuestionsButton">Готово</button>
-    </div>
-</div>
+      <div id="result">Select max grade and number of correct answers</div>
 
-<div id="screen3" class="screen hidden">
-    <button id="backButton2" class="top-button">Повернутися до налаштувань</button>
-    
-    <h2>Кількість правильних відповідей</h2>
-    <div class="number-selector-container">
-        <div id="correctAnswersPicker" class="wheel-picker"></div>
+      <p>Choose the number of correct answers</p>
+
+      <!-- ГОЛОВНА ЗМІНА: Додано єдиний контейнер для всіх кнопок відповідей -->
+      <div id="answersContainer" class="button-group">
+        <button class="realAnswer" data-grade="1">1</button>
+        <button class="realAnswer" data-grade="2">2</button>
+        <button class="realAnswer" data-grade="3">3</button>
+        <button class="realAnswer" data-grade="4">4</button>
+        <button class="realAnswer" data-grade="5">5</button>
+        <button class="realAnswer" data-grade="6">6</button>
+        <button class="realAnswer" data-grade="7">7</button>
+        <button class="realAnswer" data-grade="8">8</button>
+        <button class="realAnswer" data-grade="9">9</button>
+        <button class="realAnswer" data-grade="10">10</button>
+        <button class="realAnswer" data-grade="11">11</button>
+        <button class="realAnswer" data-grade="12">12</button>
+        <button class="realAnswer" data-grade="13">13</button>
+        <button class="realAnswer" data-grade="14">14</button>
+        <button class="realAnswer" data-grade="15">15</button>
+        <button class="realAnswer" data-grade="16">16</button>
+        <button class="realAnswer" data-grade="17">17</button>
+        <button class="realAnswer" data-grade="18">18</button>
+        <button class="realAnswer" data-grade="19">19</button>
+        <button class="realAnswer" data-grade="20">20</button>
+      </div>
     </div>
 
-    <div class="result-container">
-        <p>Оцінка</p>
-        <span id="resultGrade">0</span>
-    </div>
-    <button id="calculateButton">Розрахувати</button>
-</div>
-
-<script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>

@@ -1,116 +1,64 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const screen1 = document.getElementById('screen1');
-    const screen2 = document.getElementById('screen2');
-    const screen3 = document.getElementById('screen3');
+// Початкові значення
+let maxGrade = 0;
+let corectAnswers = 0;
+const totalQuestions = 20;
 
-    const gradeButtons = document.querySelectorAll('.grade-button');
-    const setQuestionsButton = document.getElementById('setQuestionsButton');
-    const maxQuestionsPicker = document.getElementById('maxQuestionsPicker');
-    const correctAnswersPicker = document.getElementById('correctAnswersPicker');
-    const resultGradeSpan = document.getElementById('resultGrade');
-    const calculateButton = document.getElementById('calculateButton');
-    const backButton1 = document.getElementById('backButton1');
-    const backButton2 = document.getElementById('backButton2');
+// Отримуємо доступ до елементів на сторінці
+const maxGradeContainer = document.getElementById("choseMaxGrade");
+const answersContainer = document.getElementById("answersContainer");
+const resultDisplay = document.getElementById("result");
 
-    let maxGrade = 0;
-    let maxQuestions = 20;
-    let correctAnswers = 20;
+// Функція для оновлення результату на екрані
+function updateScore() {
+  // Якщо максимальна оцінка ще не обрана, нічого не робимо
+  if (maxGrade === 0) {
+    resultDisplay.textContent = "Please choose a max grade first.";
+    return;
+  }
+  
+  // Якщо кількість відповідей ще не обрана
+  if (corectAnswers === 0) {
+    resultDisplay.textContent = "Now, choose the number of correct answers.";
+    return;
+  }
 
-    function showScreen(screenToShow) {
-        screen1.classList.add('hidden');
-        screen2.classList.add('hidden');
-        screen3.classList.add('hidden');
-        screenToShow.classList.remove('hidden');
-    }
+  // Розраховуємо оцінку
+  const score = Math.round((corectAnswers / totalQuestions) * maxGrade);
+  
+  // Відображаємо результат
+  resultDisplay.textContent = `Grade: ${score} / ${maxGrade}`;
+}
 
-    gradeButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            maxGrade = parseInt(button.dataset.grade, 10);
-            showScreen(screen2);
-        });
-    });
+// Додаємо обробник подій для кнопок вибору МАКСИМАЛЬНОЇ ОЦІНКИ
+maxGradeContainer.addEventListener("click", (e) => {
+  // Перевіряємо, чи клік був саме по кнопці
+  if (e.target.tagName === 'BUTTON') {
+    // Встановлюємо значення maxGrade з data-атрибута кнопки
+    maxGrade = parseInt(e.target.dataset.grade, 10);
+    
+    // Підсвічуємо обрану кнопку
+    const allButtons = maxGradeContainer.querySelectorAll('button');
+    allButtons.forEach(btn => btn.classList.remove('selected'));
+    e.target.classList.add('selected');
 
-    function createWheelPicker(element, min, max, defaultValue, onChange) {
-        let current = defaultValue;
-        let startY = null;
-        let swipeAccum = 0;
+    // Оновлюємо результат
+    updateScore();
+  }
+});
 
-        function render() {
-            element.innerHTML = '';
-            for (let i = current - 1; i <= current + 1; i++) {
-                const div = document.createElement('div');
-                div.className = 'picker-value ' + (i === current ? 'active' : 'inactive');
-                div.textContent = i >= min && i <= max ? i : '';
-                element.appendChild(div);
-            }
-        }
+// Додаємо обробник подій для кнопок вибору КІЛЬКОСТІ ВІДПОВІДЕЙ
+answersContainer.addEventListener("click", (e) => {
+  // Перевіряємо, чи клік був саме по кнопці
+  if (e.target.tagName === 'BUTTON') {
+    // Встановлюємо значення corectAnswers з data-атрибута кнопки
+    corectAnswers = parseInt(e.target.dataset.grade, 10);
+    
+    // Підсвічуємо обрану кнопку
+    const allButtons = answersContainer.querySelectorAll('button');
+    allButtons.forEach(btn => btn.classList.remove('selected'));
+    e.target.classList.add('selected');
 
-        function setValue(val) {
-            if (val < min) val = min;
-            if (val > max) val = max;
-            if (val !== current) {
-                current = val;
-                onChange(current);
-                render();
-            }
-        }
-
-        element.addEventListener('touchstart', e => {
-            if (e.touches.length === 1) startY = e.touches[0].clientY;
-        });
-
-        element.addEventListener('touchmove', e => {
-            if (startY !== null) {
-                const deltaY = e.touches[0].clientY - startY;
-                swipeAccum += deltaY;
-                const stepSize = 30;
-                let steps = Math.trunc(swipeAccum / stepSize);
-                if (steps !== 0) {
-                    setValue(current - steps);
-                    swipeAccum -= steps * stepSize;
-                }
-                startY = e.touches[0].clientY;
-                e.preventDefault();
-            }
-        }, { passive: false });
-
-        element.addEventListener('touchend', () => { startY = null; swipeAccum = 0; });
-
-        element.addEventListener('wheel', e => {
-            let steps = Math.round(e.deltaY / 40);
-            if (steps !== 0) setValue(current + steps);
-            e.preventDefault();
-        });
-
-        render();
-        return { setValue, getValue: () => current };
-    }
-
-    const maxQuestionsWheel = createWheelPicker(maxQuestionsPicker, 10, 30, 20, val => {
-        maxQuestions = val;
-        if (correctAnswers > maxQuestions) {
-            correctAnswers = maxQuestions;
-            correctAnswersWheel.setValue(correctAnswers);
-        }
-    });
-
-    const correctAnswersWheel = createWheelPicker(correctAnswersPicker, 0, 30, 20, val => {
-        correctAnswers = val;
-    });
-
-    setQuestionsButton.addEventListener('click', () => {
-        correctAnswersWheel.setValue(correctAnswers);
-        showScreen(screen3);
-    });
-
-    calculateButton.addEventListener('click', () => {
-        const calculatedGrade = (correctAnswers / maxQuestions) * maxGrade;
-        const finalGrade = (calculatedGrade % 1 >= 0.5) ? Math.ceil(calculatedGrade) : Math.floor(calculatedGrade);
-        resultGradeSpan.textContent = finalGrade;
-    });
-
-    backButton1.addEventListener('click', () => { showScreen(screen1); });
-    backButton2.addEventListener('click', () => { showScreen(screen1); });
-
-    showScreen(screen1);
+    // Оновлюємо результат
+    updateScore();
+  }
 });
