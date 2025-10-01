@@ -1,64 +1,100 @@
-// Початкові значення
-let maxGrade = 0;
-let corectAnswers = 0;
-const totalQuestions = 20;
+// Початкові параметри
+let maxGrade = 12;
+let totalQuestions = 20;
+let correctAnswers = 0;
 
-// Отримуємо доступ до елементів на сторінці
-const maxGradeContainer = document.getElementById("choseMaxGrade");
-const answersContainer = document.getElementById("answersContainer");
-const resultDisplay = document.getElementById("result");
+// Елементи DOM
+const settingsPanel = document.getElementById('settingsPanel');
+const settingsMinPanel = document.getElementById('settingsMinPanel');
+const toggleSettingsBtn = document.getElementById('toggleSettings');
+const expandSettingsBtn = document.getElementById('expandSettings');
+const questionsRange = document.getElementById('questionsRange');
+const questionsAmount = document.getElementById('questionsAmount');
+const maxGradeSelect = document.getElementById('maxGradeSelect');
+const buttonsContainer = document.getElementById('buttonsContainer');
+const resultDiv = document.getElementById('result');
+const summaryText = document.getElementById('summaryText');
 
-// Функція для оновлення результату на екрані
-function updateScore() {
-  // Якщо максимальна оцінка ще не обрана, нічого не робимо
-  if (maxGrade === 0) {
-    resultDisplay.textContent = "Please choose a max grade first.";
-    return;
-  }
-  
-  // Якщо кількість відповідей ще не обрана
-  if (corectAnswers === 0) {
-    resultDisplay.textContent = "Now, choose the number of correct answers.";
-    return;
-  }
-
-  // Розраховуємо оцінку
-  const score = Math.round((corectAnswers / totalQuestions) * maxGrade);
-  
-  // Відображаємо результат
-  resultDisplay.textContent = `Grade: ${score} / ${maxGrade}`;
+// Оновлення тексту в шторці-згорнутому вигляді
+function updateSummaryText() {
+  summaryText.textContent = `Питань: ${totalQuestions}, Макс бал: ${maxGrade}`;
 }
 
-// Додаємо обробник подій для кнопок вибору МАКСИМАЛЬНОЇ ОЦІНКИ
-maxGradeContainer.addEventListener("click", (e) => {
-  // Перевіряємо, чи клік був саме по кнопці
-  if (e.target.tagName === 'BUTTON') {
-    // Встановлюємо значення maxGrade з data-атрибута кнопки
-    maxGrade = parseInt(e.target.dataset.grade, 10);
-    
-    // Підсвічуємо обрану кнопку
-    const allButtons = maxGradeContainer.querySelectorAll('button');
-    allButtons.forEach(btn => btn.classList.remove('selected'));
-    e.target.classList.add('selected');
+// Анімація згортання шторки
+function collapseSettings() {
+  settingsPanel.classList.remove('expanded');
+  settingsPanel.classList.add('collapsed');
+  settingsMinPanel.classList.remove('hidden');
+}
 
-    // Оновлюємо результат
-    updateScore();
+// Анімація розгортання шторки
+function expandSettings() {
+  settingsPanel.classList.remove('collapsed');
+  settingsPanel.classList.add('expanded');
+  settingsMinPanel.classList.add('hidden');
+}
+
+// Генерація кнопок відповідей
+function generateButtons() {
+  buttonsContainer.innerHTML = '';
+  for (let i = 1; i <= totalQuestions; i++) {
+    const btn = document.createElement('button');
+    btn.textContent = i;
+    btn.dataset.value = i;
+    btn.addEventListener('click', () => {
+      correctAnswers = i;
+      updateButtonsState();
+      updateResult();
+    });
+    buttonsContainer.appendChild(btn);
   }
+}
+
+// Оновлення стану кнопок (підсвічування вибраної)
+function updateButtonsState() {
+  const btns = buttonsContainer.querySelectorAll('button');
+  btns.forEach(btn => {
+    btn.classList.toggle('selected', Number(btn.dataset.value) === correctAnswers);
+  });
+}
+
+// Оновлення результату
+function updateResult() {
+  if (correctAnswers === 0) {
+    resultDiv.textContent = 'Обери кількість правильних відповідей';
+    return;
+  }
+  const score = Math.round((correctAnswers / totalQuestions) * maxGrade);
+  resultDiv.textContent = `Оцінка: ${score} / ${maxGrade}`;
+}
+
+// Обробники подій
+
+toggleSettingsBtn.addEventListener('click', () => {
+  collapseSettings();
 });
 
-// Додаємо обробник подій для кнопок вибору КІЛЬКОСТІ ВІДПОВІДЕЙ
-answersContainer.addEventListener("click", (e) => {
-  // Перевіряємо, чи клік був саме по кнопці
-  if (e.target.tagName === 'BUTTON') {
-    // Встановлюємо значення corectAnswers з data-атрибута кнопки
-    corectAnswers = parseInt(e.target.dataset.grade, 10);
-    
-    // Підсвічуємо обрану кнопку
-    const allButtons = answersContainer.querySelectorAll('button');
-    allButtons.forEach(btn => btn.classList.remove('selected'));
-    e.target.classList.add('selected');
-
-    // Оновлюємо результат
-    updateScore();
-  }
+expandSettingsBtn.addEventListener('click', () => {
+  expandSettings();
 });
+
+questionsRange.addEventListener('input', (e) => {
+  totalQuestions = Number(e.target.value);
+  questionsAmount.textContent = totalQuestions;
+  correctAnswers = 0; // скидаємо вибір
+  updateSummaryText();
+  generateButtons();
+  updateResult();
+});
+
+maxGradeSelect.addEventListener('change', (e) => {
+  maxGrade = Number(e.target.value);
+  updateSummaryText();
+  updateResult();
+});
+
+// Початковий рендер
+updateSummaryText();
+generateButtons();
+updateResult();
+expandSettings();
