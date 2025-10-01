@@ -1,50 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Grade Calculator</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div class="container">
-      <p id="head">Choose max grade for 20 questions</p>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Grade Calculator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
 
-      <div id="choseMaxGrade" class="button-group">
-        <button class="grade-btn" data-grade="10">10</button>
-        <button class="grade-btn" data-grade="11">11</button>
-        <button class="grade-btn" data-grade="12">12</button>
+    <!-- Шторка з вибором параметрів -->
+    <div id="settingsPanel" class="panel expanded">
+      <div class="header" id="settingsHeader">
+        <span>Налаштування тесту</span>
+        <button id="toggleSettings" aria-label="Закрити/Відкрити налаштування">&#9650;</button>
       </div>
 
-      <div id="result">Select max grade and number of correct answers</div>
-
-      <p>Choose the number of correct answers</p>
-
-      <!-- ГОЛОВНА ЗМІНА: Додано єдиний контейнер для всіх кнопок відповідей -->
-      <div id="answersContainer" class="button-group">
-        <button class="realAnswer" data-grade="1">1</button>
-        <button class="realAnswer" data-grade="2">2</button>
-        <button class="realAnswer" data-grade="3">3</button>
-        <button class="realAnswer" data-grade="4">4</button>
-        <button class="realAnswer" data-grade="5">5</button>
-        <button class="realAnswer" data-grade="6">6</button>
-        <button class="realAnswer" data-grade="7">7</button>
-        <button class="realAnswer" data-grade="8">8</button>
-        <button class="realAnswer" data-grade="9">9</button>
-        <button class="realAnswer" data-grade="10">10</button>
-        <button class="realAnswer" data-grade="11">11</button>
-        <button class="realAnswer" data-grade="12">12</button>
-        <button class="realAnswer" data-grade="13">13</button>
-        <button class="realAnswer" data-grade="14">14</button>
-        <button class="realAnswer" data-grade="15">15</button>
-        <button class="realAnswer" data-grade="16">16</button>
-        <button class="realAnswer" data-grade="17">17</button>
-        <button class="realAnswer" data-grade="18">18</button>
-        <button class="realAnswer" data-grade="19">19</button>
-        <button class="realAnswer" data-grade="20">20</button>
+      <div class="content">
+        <label>
+          Кількість питань: 
+          <input type="range" id="questionsRange" min="10" max="100" value="20" step="1" />
+          <span id="questionsAmount">20</span>
+        </label>
+        <label>
+          Максимальний бал:
+          <select id="maxGradeSelect">
+            <option value="11">11</option>
+            <option value="12" selected>12</option>
+          </select>
+        </label>
       </div>
     </div>
 
-    <script src="script.js"></script>
-  </body>
+    <!-- Шторка-згорток -->
+    <div id="settingsMinPanel" class="panel collapsed hidden">
+      <span id="summaryText">Питань: 20, Макс бал: 12</span>
+      <button id="expandSettings" aria-label="Розгорнути налаштування">&#9660;</button>
+    </div>
+
+    <!-- Основна область для кнопок -->
+    <div id="buttonsContainer"></div>
+
+    <!-- Вивід оцінки -->
+    <div id="result">Обери параметри тесту</div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
 </html>
